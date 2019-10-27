@@ -8,11 +8,13 @@ import androidx.ui.core.Clip
 import androidx.ui.core.Text
 import androidx.ui.core.dp
 import androidx.ui.core.setContent
+import androidx.ui.foundation.Clickable
 import androidx.ui.foundation.DrawImage
 import androidx.ui.foundation.VerticalScroller
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.layout.*
 import androidx.ui.material.MaterialTheme
+import androidx.ui.material.ripple.Ripple
 import androidx.ui.material.themeTextStyle
 import androidx.ui.material.withOpacity
 import androidx.ui.res.imageResource
@@ -36,8 +38,7 @@ class MainActivity : AppCompatActivity() {
                             modifier = Spacing(16.dp)
                         ) {
                             MaterialTheme {
-                                greeting(name = "Helen")
-                                newsStory()
+                                switchScreen(Screen.TopLevel)
                             }
                         }
                     }
@@ -47,9 +48,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
+    fun switchScreen(screen: Screen) {
+        if (screen == Screen.TopLevel) {
+            greeting(name = "Helen")
+            newsStory()
+        } else {
+            someText()
+        }
+    }
+
+    @Composable
     fun greeting(name: String) {
-        Text(text = "Hey, sup $name")
+        Ripple(bounded = true) {
+            Clickable(onClick = {
+
+            }) {
+                MaterialTheme() {
+                    Text(text = "Hey, $name", style = (+themeTextStyle { h5 }).withOpacity(0.9f))
+                }
+            }
+        }
         HeightSpacer(height = 16.dp)
+    }
+
+    @Composable
+    fun someText() {
+        Text("Oh wow, did this work?", style = (+themeTextStyle { subtitle2 }).withOpacity(0.6f))
     }
 
     @Composable
